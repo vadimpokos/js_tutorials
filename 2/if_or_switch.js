@@ -196,43 +196,43 @@
 // alert(`Congrats! You got ${points} points`);
 
 // 10
-let year = +prompt('type year');
-let month = +prompt('type month');
-let day = +prompt('type day');
+// let year = +prompt('type year');
+// let month = +prompt('type month');
+// let day = +prompt('type day');
 
-if ((month >= 1 && month <= 12) && (day >= 1 && day <= 31)) {  // month and day validation
+// if ((month >= 1 && month <= 12) && (day >= 1 && day <= 31)) {  // month and day validation
 
-    if ((month == 2 && day > 29) || (month % 2 != 0 && day > 30)) { //February and 30/31 check
-        alert('unreal');
-    } else {
+//     if ((month == 2 && day > 29) || (month % 2 != 0 && day > 30)) { //February and 30/31 check
+//         alert('unreal');
+//     } else {
         
-        if (!((year % 400 == 0) || (year % 4 == 0 && year % 100 !== 0)) && day > 28) { //leap year check
-            alert('unreal!');
-        } else {
-            day += 1;
-            if ((year % 400 == 0) || (year % 4 == 0 && year % 100 !== 0) && day > 29) {
-                month += 1;
-                day = 1;
-            } else if (month == 2 && day > 28) {
-                month += 1;
-                day = 1;
-            } else if (month % 2 != 0 && day > 30) {
-                month += 1;
-                day = 1;
-            } else if (day > 31) {
-                month += 1;
-                day = 1;
-            } 
+//         if (!((year % 400 == 0) || (year % 4 == 0 && year % 100 !== 0)) && day > 28) { //leap year check
+//             alert('unreal!');
+//         } else {
+//             day += 1;
+//             if ((year % 400 == 0) || (year % 4 == 0 && year % 100 !== 0) && day > 29) {
+//                 month += 1;
+//                 day = 1;
+//             } else if (month == 2 && day > 28) {
+//                 month += 1;
+//                 day = 1;
+//             } else if (month % 2 != 0 && day > 30) {
+//                 month += 1;
+//                 day = 1;
+//             } else if (day > 31) {
+//                 month += 1;
+//                 day = 1;
+//             } 
             
-            if (month > 12) {
-                month = 12;
-                year += 1;
-            }
+//             if (month > 12) {
+//                 month = 12;
+//                 year += 1;
+//             }
 
-            alert(`Tomorrow is...${year}:${month}:${day}`);
-        }
-    }
+//             alert(`Tomorrow is...${year}:${month}:${day}`);
+//         }
+//     }
 
-} else {
-    alert('unreal!!!');
-}
+// } else {
+//     alert('unreal!!!');
+// }
