@@ -99,9 +99,12 @@
 // alert(`You can buy ${canBuy} chocolates\n ${moneyLeft} $ left`);
 
 // 9
-let value = +prompt(`type 3 digit number`);
-let firstDigit = Math.trunc(value / 100);
-let secondDigit = Math.trunc((value % 100) / 10);
-let thirdDigit = value % 10;
-let valueInverted = String(thirdDigit) + String(secondDigit) + String(firstDigit);
-alert(valueInverted);
+// let value = +prompt(`type 3 digit number`);
+// let firstDigit = Math.trunc(value / 100);
+// let secondDigit = Math.trunc((value % 100) / 10);
+// let thirdDigit = value % 10;
+// let valueInverted = String(thirdDigit) + String(secondDigit) + String(firstDigit);
+// alert(valueInverted);
+
+const a = 6 !== '6';
+console.log(a);
