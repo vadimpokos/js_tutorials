@@ -1,0 +1,44 @@
+.el {
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  margin: 2px;
+}
+
+.el:focus {
+  outline: none;
+}
+
+.buttons {
+  width: 30px;
+  z-index: 1;
+}
+
+.capsed {
+  text-transform: uppercase;
+}
+
+.flx {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.enabled {
+  background-color: slategrey;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto auto auto auto;
+}
+
+.space-but {
+  width: 300px;
+}
+
+.shift-but,
+.language {
+  width: 40px;
+}
