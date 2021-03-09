@@ -9,27 +9,30 @@ let lettersArr2_ru = ['й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з'
 let lettersArr3_ru = ['ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э'];
 let lettersArr4_ru = ['я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', ['.', ',']];
 
+const config_ru = [numberArr_ru, lettersArr2_ru, lettersArr3_ru, lettersArr4_ru];
+const config_en = [numberArr_en, lettersArr2_en, lettersArr3_en, lettersArr4_en];
 
+keyboard (config_en);
 
-function keyboard (numberArr, lettersArr2, lettersArr3, lettersArr4) {
+function keyboard (config) {
     document.querySelectorAll('.keys > .flx').forEach(item => item.innerHTML = '');
     
     let isShift = false;
     let isCaps = false;
-    let capsLock = [{tag: 'input', properties: {type: 'button', value: 'CapsLock', onclick: caps, className: 'caps-lock el'}}]
+    let capsLock = [{tag: 'input', properties: {type: 'button', value: 'Caps', onclick: caps, className: 'caps-lock el'}}]
     let shiftButton = [{tag: 'input', properties: {type: 'button', value: 'Shift', className: 'shift-but el'}}];
     let enterButton = [{tag: 'input', properties: {type: 'button', value: 'Enter', onclick: enter, className: 'enter-but el'}}];
     let backSpace = [{tag: 'input', properties: {type: 'button', value: 'Backspace',onclick: backspace,  className: 'back-space el'}}];
     let spaceButton = [{tag: 'input', properties: {type: 'button', value: 'Space', onclick: space, className: 'space-but el'}}];
     let lanButton = [{tag: 'input', properties: {type: 'button', value: 'lang', onclick: lang, className: 'language el'}}];
-    let leftArrow = [{tag: 'input', properties: {type: 'button', value: 'left', onclick: left, className: 'left-but el'}}];
-    let rightArrow = [{tag: 'input', properties: {type: 'button', value: 'right', onclick: right, className: 'right-but el'}}];
-    let upArrow = [{tag: 'input', properties: {type: 'button', value: 'up', onclick: up, className: 'up el'}}];
-    let downArrow = [{tag: 'input', properties: {type: 'button', value: 'down', onclick: down, className: 'down el'}}];
+    let leftArrow = [{tag: 'input', properties: {type: 'button', value: '←', onclick: left, className: 'left-but el'}}];
+    let rightArrow = [{tag: 'input', properties: {type: 'button', value: '→', onclick: right, className: 'right-but el'}}];
+    let upArrow = [{tag: 'input', properties: {type: 'button', value: '↑', onclick: up, className: 'up el'}}];
+    let downArrow = [{tag: 'input', properties: {type: 'button', value: '↓', onclick: down, className: 'down el'}}];
     
-    if(numberArr === numberArr_en) {
+    if(config[0] === config_en[0]) {
         lanButton[0].properties.value = 'Eng'
-    } else if (numberArr === numberArr_ru) {
+    } else if (config[0] === config_ru[0]) {
         lanButton[0].properties.value = 'Рус'
     }
 
@@ -38,38 +41,50 @@ function keyboard (numberArr, lettersArr2, lettersArr3, lettersArr4) {
     }
 
 
-    function renderButtons(arr, place) {
+    function renderButtons(arr, place, operation) {
         arr.forEach(item => {
             let element = document.createElement(item.tag);
             Object.entries(item.properties || {}).forEach( ([key, value]) =>{
                 element[key] = value;
             } )
-            place.appendChild(element);
+            switch (operation) {
+            case 1:
+                place.appendChild(element);
+                break;
+            case 2: 
+                place.prepend(element);
+                break;
+            case 3:
+                place.before(element);
+                break;
+            default:
+                place.appendChild(element);
+            }
         })
     }
-    let divBut1 = document.createElement('div');
-    divBut1.className = 'divBut1 flx';
-    document.querySelector('.keys > .first-lane').append(divBut1);
-    renderButtons(fillButton(numberArr, 0), document.querySelector('.keys > .first-lane > .divBut1'));
-    renderButtons(backSpace, document.querySelector('.keys > .first-lane'));
-    renderButtons(fillButton(lettersArr2, 0), document.querySelector('.keys > .second-lane'));
-    renderButtons(capsLock, document.querySelector('.keys > .third-lane'));
-    let divBut3 = document.createElement('div');
-    divBut3.className = 'divBut3 flx';
-    document.querySelector('.keys > .third-lane').append(divBut3);
-    renderButtons(fillButton(lettersArr3, 0), document.querySelector('.keys > .third-lane > .divBut3'));
-    renderButtons(enterButton, document.querySelector('.keys > .third-lane'));
-    renderButtons(shiftButton, document.querySelector('.four-lane'))
-    let divBut4 = document.createElement('div');
-    divBut4.className = 'divBut4 flx';
-    document.querySelector('.keys > .four-lane').append(divBut4);
-    renderButtons(fillButton(lettersArr4, 0), document.querySelector('.keys > .four-lane > .divBut4'));
-    renderButtons(upArrow, document.querySelector('.keys > .four-lane'))
-    renderButtons(lanButton, document.querySelector('.five-lane'))
-    renderButtons(spaceButton, document.querySelector('.five-lane'))
-    renderButtons(leftArrow, document.querySelector('.five-lane'))
-    renderButtons(downArrow, document.querySelector('.five-lane'))
-    renderButtons(rightArrow, document.querySelector('.five-lane'))
+
+    const firstLane = document.querySelector('.keys > .first-lane');
+    const secondLane = document.querySelector('.keys > .second-lane');
+    const thirdlane = document.querySelector('.keys > .third-lane');
+    const fourLane = document.querySelector('.keys > .four-lane');
+    const fiveLane = document.querySelector('.keys > .five-lane');
+
+    let forRender = [[fillButton(config[0], 0), firstLane],
+                    [backSpace, firstLane],
+                    [fillButton(config[1], 0), secondLane],
+                    [capsLock, thirdlane],
+                    [fillButton(config[2], 0), thirdlane],
+                    [enterButton, thirdlane],
+                    [shiftButton, fourLane],
+                    [fillButton(config[3], 0), fourLane],
+                    [upArrow, fourLane],
+                    [lanButton, fiveLane],
+                    [spaceButton, fiveLane],
+                    [leftArrow, fiveLane],
+                    [downArrow, fiveLane],
+                    [rightArrow, fiveLane]]
+
+    forRender.forEach(item => renderButtons(item[0], item[1]));
 
 
 
@@ -88,7 +103,7 @@ function keyboard (numberArr, lettersArr2, lettersArr3, lettersArr4) {
         let target = event.target;
         if(target.value === 'Shift') {
             shift();
-        } else if(target.value || isShift === true) {
+        } else if(target.value && isShift === true) {
             unShift()
         }
     });
@@ -97,29 +112,41 @@ function keyboard (numberArr, lettersArr2, lettersArr3, lettersArr4) {
         console.log(isShift)
         isShift = !isShift;
         console.log(isShift);
+
+        let reRender = [[fillButton(config[0], 1).reverse(), firstLane, 2],
+                         [fillButton(config[1], 1), secondLane],
+                         [fillButton(config[2], 1), document.querySelector('.enter-but'), 3],
+                         [fillButton(config[3], 1), document.querySelector('.up'), 3]];
+        
+        document.querySelectorAll('.buttons').forEach(item => item.remove());
+    
+        reRender.forEach(item => renderButtons(item[0], item[1], item[2]))
         
         if(isShift === true) {
-            document.querySelectorAll('.buttons').forEach(item => item.remove());
-            renderButtons(fillButton(numberArr, 1), document.querySelector('.keys > .first-lane > .divBut1'));
-            renderButtons(fillButton(lettersArr2, 1), document.querySelector('.keys > .second-lane'));
-            renderButtons(fillButton(lettersArr3, 1), document.querySelector('.keys > .third-lane > .divBut3'));
-            renderButtons(fillButton(lettersArr4, 1), document.querySelector('.keys > .four-lane > .divBut4'));
+            
+            
+
             if(isCaps === true) {
                 document.querySelectorAll('.buttons').forEach(item => item.classList.remove('capsed'));
             } else {
                 document.querySelectorAll('.buttons').forEach(item => item.classList.add('capsed')); 
             }
         } else{
-            unShift()
+             unShift();
         }
     }
 
     function unShift() {
         document.querySelectorAll('.buttons').forEach(item => item.remove());
-        renderButtons(fillButton(numberArr, 0), document.querySelector('.keys > .first-lane > .divBut1'));
-        renderButtons(fillButton(lettersArr2, 0), document.querySelector('.keys > .second-lane'));
-        renderButtons(fillButton(lettersArr3, 0), document.querySelector('.keys > .third-lane > .divBut3'));
-        renderButtons(fillButton(lettersArr4, 0), document.querySelector('.keys > .four-lane > .divBut4'));
+        
+
+        let reRender = [[fillButton(config[0], 0).reverse(), firstLane, 2],
+                         [fillButton(config[1], 0), secondLane],
+                         [fillButton(config[2], 0), document.querySelector('.enter-but'), 3],
+                         [fillButton(config[3], 0), document.querySelector('.up'), 3]];
+
+        reRender.forEach(item => renderButtons(item[0], item[1], item[2]))
+
         if(isCaps === false) {
             document.querySelectorAll('.buttons').forEach(item => item.classList.remove('capsed'));
         } else {
@@ -164,10 +191,10 @@ function keyboard (numberArr, lettersArr2, lettersArr3, lettersArr4) {
     }
 
     function lang() {
-        if(numberArr === numberArr_en) {
-            keyboard (numberArr_ru, lettersArr2_ru, lettersArr3_ru, lettersArr4_ru)
-        } else if(numberArr === numberArr_ru){
-            keyboard (numberArr_en, lettersArr2_en, lettersArr3_en, lettersArr4_en)
+        if(config[0] === config_en[0]) {
+            keyboard (config_ru)
+        } else if(config[0] === config_ru[0]){
+            keyboard (config_en)
         }
     }
 
@@ -200,4 +227,3 @@ function keyboard (numberArr, lettersArr2, lettersArr3, lettersArr4) {
 
 }
 
-keyboard (numberArr_ru, lettersArr2_ru, lettersArr3_ru, lettersArr4_ru)

@@ -19,9 +19,8 @@
 }
 
 .flx {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(16, 40px);
 }
 
 .enabled {
@@ -35,10 +34,30 @@
 }
 
 .space-but {
-  width: 300px;
+  grid-column: 3 / 12;
 }
 
-.shift-but,
 .language {
-  width: 40px;
+  grid-column: 1 / span 2;
+}
+
+.back-space {
+  grid-column: 14 / span 3;
+}
+
+.caps-lock {
+  grid-column: 1 / span 2;
+  padding: 1px 1px;
+}
+
+.enter-but {
+  grid-column: 14 / span 2;
+}
+
+.shift-but {
+  grid-column: 1 / span 2;
+}
+
+.up {
+  grid-column: 13 / 14;
 }
