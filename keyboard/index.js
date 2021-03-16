@@ -21,14 +21,14 @@ function keyboard (config) {
     let isCaps = false;
     let capsLock = [{tag: 'input', properties: {type: 'button', value: 'Caps', onclick: caps, className: 'caps-lock el'}}]
     let shiftButton = [{tag: 'input', properties: {type: 'button', value: 'Shift', className: 'shift-but el'}}];
-    let enterButton = [{tag: 'input', properties: {type: 'button', value: 'Enter', onclick: enter, className: 'enter-but el'}}];
-    let backSpace = [{tag: 'input', properties: {type: 'button', value: 'Backspace',onclick: backspace,  className: 'back-space el'}}];
-    let spaceButton = [{tag: 'input', properties: {type: 'button', value: 'Space', onclick: space, className: 'space-but el'}}];
+    let enterButton = [{tag: 'input', properties: {type: 'button', value: 'Enter', onclick: handleFunctional, className: 'enter-but el'}}];
+    let backSpace = [{tag: 'input', properties: {type: 'button', value: 'Backspace',onclick: handleFunctional,  className: 'back-space el'}}];
+    let spaceButton = [{tag: 'input', properties: {type: 'button', value: 'Space', onclick: handleFunctional, className: 'space-but el'}}];
     let lanButton = [{tag: 'input', properties: {type: 'button', value: 'lang', onclick: lang, className: 'language el'}}];
-    let leftArrow = [{tag: 'input', properties: {type: 'button', value: '←', onclick: left, className: 'left-but el'}}];
-    let rightArrow = [{tag: 'input', properties: {type: 'button', value: '→', onclick: right, className: 'right-but el'}}];
-    let upArrow = [{tag: 'input', properties: {type: 'button', value: '↑', onclick: up, className: 'up el'}}];
-    let downArrow = [{tag: 'input', properties: {type: 'button', value: '↓', onclick: down, className: 'down el'}}];
+    let leftArrow = [{tag: 'input', properties: {type: 'button', value: '←', onclick: handleFunctional, className: 'left-but el'}}];
+    let rightArrow = [{tag: 'input', properties: {type: 'button', value: '→', onclick: handleFunctional, className: 'right-but el'}}];
+    let upArrow = [{tag: 'input', properties: {type: 'button', value: '↑', onclick: handleFunctional, className: 'up el'}}];
+    let downArrow = [{tag: 'input', properties: {type: 'button', value: '↓', onclick: handleFunctional, className: 'down el'}}];
     
     if(config[0] === config_en[0]) {
         lanButton[0].properties.value = 'Eng'
@@ -123,8 +123,6 @@ function keyboard (config) {
         reRender.forEach(item => renderButtons(item[0], item[1], item[2]))
         
         if(isShift === true) {
-            
-            
 
             if(isCaps === true) {
                 document.querySelectorAll('.buttons').forEach(item => item.classList.remove('capsed'));
@@ -167,27 +165,64 @@ function keyboard (config) {
         }
     }
 
-    function enter() {
-        let position = document.getElementById('key-input').selectionEnd;
-        document.getElementById('key-input').value = document.getElementById('key-input').value.substring(0, position) + '\n' + document.getElementById('key-input').value.substring(position, document.getElementById('key-input').value.length); 
-        document.getElementById('key-input').focus();
-    }
+    function handleFunctional(event) {
 
-    function backspace() {
-        let position = document.getElementById('key-input').selectionEnd;
-        let strToCut = document.getElementById('key-input').value.substring(0, position)
-        let cutedStr = strToCut.slice(0, -1);
-        document.getElementById('key-input').value = cutedStr +  document.getElementById('key-input').value.substring(position, document.getElementById('key-input').value.length);
-        document.getElementById('key-input').focus();
-        document.getElementById('key-input').selectionEnd = position - 1;
-    }
+        let position = document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart
 
-    function space() {
-        let position = document.getElementById('key-input').selectionEnd;
-        document.getElementById('key-input').value = document.getElementById('key-input').value.substring(0, position) + ' ' + document.getElementById('key-input').value.substring(position, document.getElementById('key-input').value.length); 
-        document.getElementById('key-input').focus();
-        document.getElementById('key-input').selectionEnd = position + 1;
+        switch(event.target.value) {
+            case 'Enter': enter();
+                break;
+            case 'Backspace': backspace();
+                break;
+            case 'Space': space();
+                break;
+            case '←': left();
+                break;
+            case '→': right();
+                break;
+            case '↑': up();
+                break;
+            case '↓': down();
+                break;
+            default: console.log(event.target.value);
+        }
 
+        function enter() {
+            document.getElementById('key-input').value = document.getElementById('key-input').value.substring(0, position) + '\n' + document.getElementById('key-input').value.substring(position, document.getElementById('key-input').value.length); 
+        }
+
+        function backspace() {
+            let strToCut = document.getElementById('key-input').value.substring(0, position)
+            let cutedStr = strToCut.slice(0, -1);
+            document.getElementById('key-input').value = cutedStr +  document.getElementById('key-input').value.substring(position, document.getElementById('key-input').value.length);
+            document.getElementById('key-input').selectionEnd = position - 1;
+        }
+
+        function space() {
+            document.getElementById('key-input').value = document.getElementById('key-input').value.substring(0, position) + ' ' + document.getElementById('key-input').value.substring(position, document.getElementById('key-input').value.length); 
+            document.getElementById('key-input').selectionEnd = position + 1;
+        }
+
+        function left() {
+            document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart = position - 1;
+        }
+
+        function right() {
+            document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart = position + 1;
+        }
+
+        function up() {
+            const positionFromLeft = document.getElementById('key-input').value.slice(0, position).match(/(\n).*$(?!\1)/g) || [[1]];
+            document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart = document.getElementById('key-input').selectionStart -= positionFromLeft[0].length;
+        }
+
+        function down() {        
+            const positionFromLeft = document.getElementById('key-input').value.slice(0, position).match(/^.*(\n).*(?!\1)/) || [[1]];
+            document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart = document.getElementById('key-input').selectionStart += positionFromLeft[0].length;
+        }
+
+        document.getElementById('key-input').focus();
+        event.stopPropagation();
     }
 
     function lang() {
@@ -197,33 +232,6 @@ function keyboard (config) {
             keyboard (config_en)
         }
     }
-
-    function left() {
-        let position = document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart
-        document.getElementById('key-input').focus();
-        document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart = position - 1;
-    }
-
-    function right() {
-        let position = document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart
-        document.getElementById('key-input').focus();
-        document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart = position + 1;
-    }
-
-    function up() {
-        let position = document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart  
-        const positionFromLeft = document.getElementById('key-input').value.slice(0, position).match(/(\n).*$(?!\1)/g) || [[1]];
-        document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart -= positionFromLeft[0].length;
-        document.getElementById('key-input').focus();
-    }
-
-    function down() {
-        let position = document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart
-        const positionFromLeft = document.getElementById('key-input').value.slice(0, position).match(/^.*(\n).*(?!\1)/) || [[1]];
-        document.getElementById('key-input').selectionEnd = document.getElementById('key-input').selectionStart += positionFromLeft[0].length;
-        document.getElementById('key-input').focus();
-    }
-
 
 }
 
